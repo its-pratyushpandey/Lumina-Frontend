@@ -348,7 +348,8 @@ export default function AdminProductsPage() {
           </div>
         ) : (
           <div className="mt-3 border border-gray-100 rounded-2xl overflow-hidden">
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+              <table className="min-w-[760px] w-full text-sm">
               <thead className="bg-gray-50 text-gray-600">
                 <tr>
                   <th className="text-left px-4 py-3">Product</th>
@@ -388,7 +389,8 @@ export default function AdminProductsPage() {
                   </tr>
                 )}
               </tbody>
-            </table>
+              </table>
+            </div>
           </div>
         )}
       </div>

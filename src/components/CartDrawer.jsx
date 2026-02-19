@@ -11,7 +11,8 @@ const CartDrawer = () => {
   const { items, total, isOpen } = useSelector((state) => state.cart);
 
   const handleQuantityChange = (productId, newQuantity) => {
-    dispatch(updateCartItem({ productId, quantity: newQuantity }));
+    const safeQuantity = Math.max(1, Number(newQuantity || 1));
+    dispatch(updateCartItem({ productId, quantity: safeQuantity }));
   };
 
   const handleRemove = (productId) => {
@@ -48,8 +49,9 @@ const CartDrawer = () => {
               <h2 className="text-2xl font-heading font-semibold" data-testid="cart-title">Shopping Cart</h2>
               <button
                 onClick={() => dispatch(closeCart())}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="h-11 w-11 inline-flex items-center justify-center hover:bg-gray-100 rounded-xl transition-colors"
                 data-testid="close-cart-button"
+                aria-label="Close cart"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -67,7 +69,7 @@ const CartDrawer = () => {
                       <img
                         src={item.product.images[0]?.url}
                         alt={item.product.name}
-                        className="w-20 h-20 object-cover rounded-lg"
+                        className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl"
                       />
                       <div className="flex-1">
                         <h3 className="font-semibold text-sm">{item.product.name}</h3>
@@ -76,16 +78,18 @@ const CartDrawer = () => {
                         <div className="flex items-center gap-2 mt-2">
                           <button
                             onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)}
-                            className="p-1 hover:bg-white rounded transition-colors"
+                            className="h-10 w-10 inline-flex items-center justify-center hover:bg-white rounded-xl transition-colors"
                             data-testid="decrease-quantity"
+                            aria-label="Decrease quantity"
                           >
                             <Minus className="w-4 h-4" />
                           </button>
-                          <span className="w-8 text-center" data-testid="item-quantity">{item.quantity}</span>
+                          <span className="min-w-10 text-center font-medium" data-testid="item-quantity">{item.quantity}</span>
                           <button
                             onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}
-                            className="p-1 hover:bg-white rounded transition-colors"
+                            className="h-10 w-10 inline-flex items-center justify-center hover:bg-white rounded-xl transition-colors"
                             data-testid="increase-quantity"
+                            aria-label="Increase quantity"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -94,8 +98,9 @@ const CartDrawer = () => {
                       
                       <button
                         onClick={() => handleRemove(item.product._id)}
-                        className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors h-fit"
+                        className="h-11 w-11 inline-flex items-center justify-center hover:bg-red-50 text-red-600 rounded-xl transition-colors h-fit"
                         data-testid="remove-item"
+                        aria-label="Remove item"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

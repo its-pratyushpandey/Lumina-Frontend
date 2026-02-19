@@ -102,19 +102,22 @@ const ProductCard = ({ product }) => {
         </div>
         
         <div className="p-4">
-          <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors" data-testid="product-name">
+          <h3
+            className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 text-base sm:text-[15px]"
+            data-testid="product-name"
+          >
             {product.name}
           </h3>
           
           <p className="text-sm text-gray-600 mt-1 line-clamp-2">{product.shortDescription}</p>
           
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-2 flex-wrap">
             <RatingStars rating={product.rating} />
             <span className="text-sm font-medium">{Number(product.rating || 0).toFixed(1)}</span>
             <span className="text-sm text-gray-500">({product.reviewCount || 0})</span>
           </div>
           
-          <div className="flex items-center justify-between mt-4">
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <span className="text-xl font-bold text-gray-900" data-testid="product-price">${product.price}</span>
               {product.compareAtPrice && (
@@ -126,7 +129,7 @@ const ProductCard = ({ product }) => {
               onClick={handleAddToCart}
               type="button"
               disabled={product.stock === 0}
-              className="h-10 px-4 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="h-11 w-full sm:w-auto px-4 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
               data-testid="add-to-cart-button"
             >
               <ShoppingCart className="w-5 h-5" />

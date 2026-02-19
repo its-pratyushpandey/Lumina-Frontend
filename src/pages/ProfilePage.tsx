@@ -100,7 +100,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-background-subtle py-8" data-testid="profile-page">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-heading font-bold">My Profile</h1>
+          <h1 className="text-2xl sm:text-4xl font-heading font-bold">My Profile</h1>
           <p className="text-gray-600 mt-2">Manage your account and addresses.</p>
         </div>
 

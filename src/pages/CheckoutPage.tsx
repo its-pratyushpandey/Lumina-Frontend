@@ -207,10 +207,10 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background-subtle py-8" data-testid="checkout-page">
+    <div className="min-h-screen bg-background-subtle py-6 sm:py-8" data-testid="checkout-page">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-heading font-bold">Checkout</h1>
+          <h1 className="text-2xl sm:text-4xl font-heading font-bold">Checkout</h1>
           <p className="text-gray-600 mt-2">Secure payment with Stripe.</p>
         </div>
 
@@ -329,7 +329,7 @@ export default function CheckoutPage() {
               <div className="mt-8">
                 <h3 className="font-semibold mb-3">Coupon</h3>
                 {couponError && <div className="text-sm text-red-600 mb-2">{couponError}</div>}
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
@@ -339,7 +339,7 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={applyCoupon}
-                    className="px-4 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-hover transition-colors"
+                    className="w-full sm:w-auto px-4 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-hover transition-colors"
                     disabled={!couponCode.trim()}
                   >
                     Apply

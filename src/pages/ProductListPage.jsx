@@ -142,10 +142,10 @@ const ProductListPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background-subtle py-8" data-testid="product-list-page">
+    <div className="min-h-screen bg-background-subtle py-6 sm:py-8" data-testid="product-list-page">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-heading font-bold mb-4" data-testid="page-title">All Products</h1>
+          <h1 className="text-2xl sm:text-4xl font-heading font-bold mb-4" data-testid="page-title">All Products</h1>
           
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
@@ -156,7 +156,7 @@ const ProductListPage = () => {
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
                 ref={searchInputRef}
-                className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 pl-12 pr-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
                 data-testid="search-input"
               />
             </div>
@@ -164,7 +164,7 @@ const ProductListPage = () => {
             <select
               value={filters.category}
               onChange={(e) => handleFilterChange('category', e.target.value)}
-              className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary bg-white"
+              className="w-full md:w-56 h-12 px-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary bg-white"
               data-testid="category-filter"
             >
               <option value="">All Categories</option>
@@ -176,7 +176,7 @@ const ProductListPage = () => {
             <select
               value={`${filters.sortBy}:${filters.order}`}
               onChange={(e) => handleSortChange(e.target.value)}
-              className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary bg-white"
+              className="w-full md:w-56 h-12 px-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary bg-white"
               data-testid="sort-filter"
             >
               <option value="createdAt:desc">Newest</option>

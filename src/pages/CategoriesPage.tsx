@@ -22,7 +22,7 @@ export default function CategoriesPage() {
     <div className="min-h-screen bg-background-subtle py-8" data-testid="categories-page">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-heading font-bold">Categories</h1>
+          <h1 className="text-2xl sm:text-4xl font-heading font-bold">Categories</h1>
           <p className="text-gray-600 mt-2">Browse products by category.</p>
         </div>
 

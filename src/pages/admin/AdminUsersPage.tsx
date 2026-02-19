@@ -48,17 +48,17 @@ export default function AdminUsersPage() {
           <p className="text-gray-600 mt-1">Search users and manage roles.</p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search by name or email"
-            className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full sm:w-80 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <button
             type="button"
             onClick={() => load(q.trim())}
-            className="px-4 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-hover transition-colors"
+            className="w-full sm:w-auto px-4 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-hover transition-colors"
           >
             Search
           </button>
@@ -73,52 +73,54 @@ export default function AdminUsersPage() {
         </div>
       ) : (
         <div className="border border-gray-100 rounded-2xl overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-600">
-              <tr>
-                <th className="text-left px-4 py-3">Name</th>
-                <th className="text-left px-4 py-3">Email</th>
-                <th className="text-left px-4 py-3">Role</th>
-                <th className="text-right px-4 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u._id} className="border-t border-gray-100">
-                  <td className="px-4 py-3 font-medium">{u.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{u.email}</td>
-                  <td className="px-4 py-3 capitalize">{u.role}</td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="inline-flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() => updateRole(u._id, 'user')}
-                        disabled={isSaving === u._id}
-                        className="px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
-                      >
-                        Set user
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => updateRole(u._id, 'admin')}
-                        disabled={isSaving === u._id}
-                        className="px-3 py-2 rounded-xl bg-primary text-white hover:bg-primary-hover disabled:opacity-50"
-                      >
-                        Set admin
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {users.length === 0 && (
+          <div className="overflow-x-auto">
+            <table className="min-w-[760px] w-full text-sm">
+              <thead className="bg-gray-50 text-gray-600">
                 <tr>
-                  <td className="px-4 py-6 text-gray-600" colSpan={4}>
-                    No users found.
-                  </td>
+                  <th className="text-left px-4 py-3">Name</th>
+                  <th className="text-left px-4 py-3">Email</th>
+                  <th className="text-left px-4 py-3">Role</th>
+                  <th className="text-right px-4 py-3">Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u._id} className="border-t border-gray-100">
+                    <td className="px-4 py-3 font-medium">{u.name}</td>
+                    <td className="px-4 py-3 text-gray-600">{u.email}</td>
+                    <td className="px-4 py-3 capitalize">{u.role}</td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="inline-flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => updateRole(u._id, 'user')}
+                          disabled={isSaving === u._id}
+                          className="h-11 px-3 rounded-xl border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+                        >
+                          Set user
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateRole(u._id, 'admin')}
+                          disabled={isSaving === u._id}
+                          className="h-11 px-3 rounded-xl bg-primary text-white hover:bg-primary-hover disabled:opacity-50"
+                        >
+                          Set admin
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {users.length === 0 && (
+                  <tr>
+                    <td className="px-4 py-6 text-gray-600" colSpan={4}>
+                      No users found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

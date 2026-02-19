@@ -5,6 +5,7 @@ import { Star, ShoppingCart, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { productAPI } from '../services/api';
 import { addToCart, openCart } from '../store/slices/cartSlice';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const FALLBACK_IMAGE =
   'data:image/svg+xml;charset=utf-8,' +
@@ -25,6 +26,7 @@ const ProductDetailPage = () => {
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [carouselApi, setCarouselApi] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,6 +55,31 @@ const ProductDetailPage = () => {
     dispatch(openCart());
   };
 
+  const images = (product?.images && product.images.length > 0 ? product.images : [{ url: FALLBACK_IMAGE }]).map(
+    (img) => ({ url: img?.url || FALLBACK_IMAGE })
+  );
+
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      try {
+        setSelectedImage(carouselApi.selectedScrollSnap());
+      } catch {
+        // ignore
+      }
+    };
+
+    onSelect();
+    carouselApi.on('select', onSelect);
+    carouselApi.on('reInit', onSelect);
+
+    return () => {
+      carouselApi.off('select', onSelect);
+      carouselApi.off('reInit', onSelect);
+    };
+  }, [carouselApi]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" data-testid="loading-state">
@@ -79,30 +106,62 @@ const ProductDetailPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
-            <div className="aspect-square bg-white rounded-2xl overflow-hidden mb-4">
-              <img
-                src={product.images?.[selectedImage]?.url || FALLBACK_IMAGE}
-                alt={product.name}
-                className="w-full h-full object-cover"
-                data-testid="product-main-image"
-                loading="eager"
-                decoding="async"
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = FALLBACK_IMAGE;
-                }}
-              />
+            <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+              <Carousel
+                setApi={setCarouselApi}
+                opts={{ loop: false }}
+                className="w-full"
+                data-testid="product-image-carousel"
+              >
+                <CarouselContent>
+                  {images.map((img, idx) => (
+                    <CarouselItem key={idx}>
+                      <div className="aspect-square bg-white overflow-hidden">
+                        <img
+                          src={img.url}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                          data-testid="product-main-image"
+                          loading={idx === 0 ? 'eager' : 'lazy'}
+                          decoding="async"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = FALLBACK_IMAGE;
+                          }}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+
+                {images.length > 1 && (
+                  <>
+                    <CarouselPrevious className="left-3 top-1/2 -translate-y-1/2" />
+                    <CarouselNext className="right-3 top-1/2 -translate-y-1/2" />
+                  </>
+                )}
+              </Carousel>
             </div>
-            {product.images?.length > 1 && (
-              <div className="flex gap-4">
-                {product.images.map((img, idx) => (
+
+            {images.length > 1 && (
+              <div className="mt-4 flex gap-3 overflow-x-auto pb-2 -mx-1 px-1" aria-label="Product thumbnails">
+                {images.map((img, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setSelectedImage(idx)}
-                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${
+                    type="button"
+                    onClick={() => {
+                      setSelectedImage(idx);
+                      try {
+                        carouselApi?.scrollTo?.(idx);
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                    className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 transition-colors ${
                       selectedImage === idx ? 'border-primary' : 'border-gray-200'
                     }`}
                     data-testid="product-thumbnail"
+                    aria-label={`View image ${idx + 1}`}
                   >
                     <img
                       src={img.url}
@@ -122,9 +181,9 @@ const ProductDetailPage = () => {
           </div>
 
           <div>
-            <h1 className="text-4xl font-heading font-bold mb-4" data-testid="product-title">{product.name}</h1>
+            <h1 className="text-2xl sm:text-4xl font-heading font-bold mb-4" data-testid="product-title">{product.name}</h1>
             
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-6 flex-wrap">
               <div className="flex items-center gap-1">
                 <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 <span className="font-semibold" data-testid="product-rating">{product.rating}</span>
@@ -140,29 +199,35 @@ const ProductDetailPage = () => {
 
             <div className="mb-6">
               <div className="flex items-baseline gap-4">
-                <span className="text-4xl font-bold text-gray-900" data-testid="product-price">${product.price}</span>
+                <span className="text-3xl sm:text-4xl font-bold text-gray-900" data-testid="product-price">${product.price}</span>
                 {product.compareAtPrice && (
                   <span className="text-xl text-gray-500 line-through">${product.compareAtPrice}</span>
                 )}
               </div>
             </div>
 
-            <p className="text-gray-700 mb-6 leading-relaxed" data-testid="product-description">{product.description}</p>
+            <p className="text-gray-700 mb-6 leading-relaxed text-sm sm:text-base" data-testid="product-description">{product.description}</p>
 
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex items-center border border-gray-200 rounded-xl">
+            <div className="mb-8 flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="w-full sm:w-auto flex items-center border border-gray-200 rounded-2xl overflow-hidden">
                 <button
+                  type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-2 hover:bg-gray-50 transition-colors"
+                  className="h-11 w-11 inline-flex items-center justify-center hover:bg-gray-50 transition-colors"
                   data-testid="decrease-quantity"
+                  aria-label="Decrease quantity"
                 >
                   -
                 </button>
-                <span className="px-6 py-2 border-x border-gray-200" data-testid="quantity-display">{quantity}</span>
+                <span className="h-11 min-w-16 inline-flex items-center justify-center border-x border-gray-200 font-medium" data-testid="quantity-display">
+                  {quantity}
+                </span>
                 <button
+                  type="button"
                   onClick={() => setQuantity(quantity + 1)}
-                  className="px-4 py-2 hover:bg-gray-50 transition-colors"
+                  className="h-11 w-11 inline-flex items-center justify-center hover:bg-gray-50 transition-colors"
                   data-testid="increase-quantity"
+                  aria-label="Increase quantity"
                 >
                   +
                 </button>
@@ -171,14 +236,19 @@ const ProductDetailPage = () => {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className="flex-1 bg-primary text-white py-3 rounded-full font-semibold hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full sm:flex-1 bg-primary text-white h-11 px-6 rounded-full font-semibold hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
                 data-testid="add-to-cart-button"
               >
                 <ShoppingCart className="w-5 h-5" />
                 Add to Cart
               </button>
 
-              <button className="p-3 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors" data-testid="wishlist-button">
+              <button
+                type="button"
+                className="h-11 w-11 inline-flex items-center justify-center border border-gray-200 rounded-full hover:bg-gray-50 transition-colors"
+                data-testid="wishlist-button"
+                aria-label="Add to wishlist"
+              >
                 <Heart className="w-5 h-5" />
               </button>
             </div>

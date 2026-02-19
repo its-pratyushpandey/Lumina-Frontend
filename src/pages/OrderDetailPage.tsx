@@ -30,7 +30,7 @@ export default function OrderDetailPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-heading font-bold">Order Details</h1>
+            <h1 className="text-2xl sm:text-3xl font-heading font-bold">Order Details</h1>
             <p className="text-gray-600 mt-1">View items and status.</p>
           </div>
           <Link to="/orders" className="text-primary font-semibold hover:underline">

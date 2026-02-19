@@ -64,31 +64,33 @@ export default function AdminOverviewPage() {
           <p className="text-sm text-gray-600 mt-1">Threshold: {data?.lowStockThreshold}</p>
 
           <div className="mt-3 border border-gray-100 rounded-2xl overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-gray-600">
-                <tr>
-                  <th className="text-left px-4 py-3">Product</th>
-                  <th className="text-left px-4 py-3">SKU</th>
-                  <th className="text-right px-4 py-3">Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(data?.lowStockProducts || []).map((p: any) => (
-                  <tr key={p._id} className="border-t border-gray-100">
-                    <td className="px-4 py-3">{p.name}</td>
-                    <td className="px-4 py-3 text-gray-600">{p.sku}</td>
-                    <td className="px-4 py-3 text-right font-semibold">{p.stock}</td>
-                  </tr>
-                ))}
-                {(data?.lowStockProducts || []).length === 0 && (
+            <div className="overflow-x-auto">
+              <table className="min-w-[520px] w-full text-sm">
+                <thead className="bg-gray-50 text-gray-600">
                   <tr>
-                    <td className="px-4 py-6 text-gray-600" colSpan={3}>
-                      No low stock products.
-                    </td>
+                    <th className="text-left px-4 py-3">Product</th>
+                    <th className="text-left px-4 py-3">SKU</th>
+                    <th className="text-right px-4 py-3">Stock</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {(data?.lowStockProducts || []).map((p: any) => (
+                    <tr key={p._id} className="border-t border-gray-100">
+                      <td className="px-4 py-3">{p.name}</td>
+                      <td className="px-4 py-3 text-gray-600">{p.sku}</td>
+                      <td className="px-4 py-3 text-right font-semibold">{p.stock}</td>
+                    </tr>
+                  ))}
+                  {(data?.lowStockProducts || []).length === 0 && (
+                    <tr>
+                      <td className="px-4 py-6 text-gray-600" colSpan={3}>
+                        No low stock products.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -97,34 +99,36 @@ export default function AdminOverviewPage() {
           <p className="text-sm text-gray-600 mt-1">Last 10 orders</p>
 
           <div className="mt-3 border border-gray-100 rounded-2xl overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-gray-600">
-                <tr>
-                  <th className="text-left px-4 py-3">Customer</th>
-                  <th className="text-left px-4 py-3">Status</th>
-                  <th className="text-right px-4 py-3">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(data?.recentOrders || []).map((o: any) => (
-                  <tr key={o._id} className="border-t border-gray-100">
-                    <td className="px-4 py-3">
-                      <div className="font-medium">{o.user?.name || 'Unknown'}</div>
-                      <div className="text-xs text-gray-500">{o.user?.email}</div>
-                    </td>
-                    <td className="px-4 py-3 capitalize">{o.orderStatus}</td>
-                    <td className="px-4 py-3 text-right font-semibold">${Number(o.total || 0).toFixed(2)}</td>
-                  </tr>
-                ))}
-                {(data?.recentOrders || []).length === 0 && (
+            <div className="overflow-x-auto">
+              <table className="min-w-[520px] w-full text-sm">
+                <thead className="bg-gray-50 text-gray-600">
                   <tr>
-                    <td className="px-4 py-6 text-gray-600" colSpan={3}>
-                      No recent orders.
-                    </td>
+                    <th className="text-left px-4 py-3">Customer</th>
+                    <th className="text-left px-4 py-3">Status</th>
+                    <th className="text-right px-4 py-3">Total</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {(data?.recentOrders || []).map((o: any) => (
+                    <tr key={o._id} className="border-t border-gray-100">
+                      <td className="px-4 py-3">
+                        <div className="font-medium">{o.user?.name || 'Unknown'}</div>
+                        <div className="text-xs text-gray-500">{o.user?.email}</div>
+                      </td>
+                      <td className="px-4 py-3 capitalize">{o.orderStatus}</td>
+                      <td className="px-4 py-3 text-right font-semibold">${Number(o.total || 0).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                  {(data?.recentOrders || []).length === 0 && (
+                    <tr>
+                      <td className="px-4 py-6 text-gray-600" colSpan={3}>
+                        No recent orders.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

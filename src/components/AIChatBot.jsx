@@ -119,7 +119,7 @@ const AIChatBot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25 }}
-            className="fixed bottom-24 right-6 w-96 h-[500px] glass-card rounded-2xl shadow-2xl flex flex-col z-50"
+            className="fixed bottom-28 right-4 sm:right-6 w-[calc(100vw-2rem)] max-w-sm sm:max-w-md h-[70vh] max-h-[560px] sm:h-[500px] glass-card rounded-2xl shadow-2xl flex flex-col z-50"
             data-testid="ai-chat-window"
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-100">
@@ -218,7 +218,7 @@ const AIChatBot = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center z-40 hover:bg-primary-hover transition-colors"
+        className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center z-40 hover:bg-primary-hover transition-colors"
         data-testid="ai-chat-button"
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
