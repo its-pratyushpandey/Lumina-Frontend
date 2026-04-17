@@ -63,27 +63,25 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
-          <aside className="hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-100 p-4 h-fit">
-            <nav className="space-y-1">
-              {nav.map((item) => {
-                const active = location.pathname === item.to;
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-colors ${
-                      active ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span className="font-medium">{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </aside>
+        <div className="flex flex-col gap-6">
+          <nav className="hidden lg:flex items-center gap-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-2">
+            {nav.map((item) => {
+              const active = location.pathname === item.to;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-colors ${
+                    active ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
 
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <Outlet />

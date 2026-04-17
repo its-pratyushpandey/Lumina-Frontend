@@ -32,7 +32,7 @@ export default function MobileBottomNav() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((s) => s.auth);
   const { items } = useAppSelector((s) => s.cart);
-  const cartCount = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+  const cartCount = items.reduce((sum: number, item: any) => sum + (item.quantity || 0), 0);
 
   const isActive = (path: string) => location.pathname === path;
 
